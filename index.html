@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blade: A Derivative-free Bayesian Inversion Method using Diffusion Priors">
+    <meta name="keywords" content="Bayesian inversion, diffusion models, inverse problems, machine learning">
+    
+    <title>Blade: Derivative-free Bayesian Inversion with Diffusion Priors</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <h1 class="title">
+                <span class="title-accent">Blade</span>
+            </h1>
+            <p class="subtitle">A Derivative-free Bayesian Inversion Method using Diffusion Priors</p>
+            
+            <div class="authors">
+                <span class="author">Hongkai Zheng<sup>1</sup></span>
+                <span class="author">Austin Wang<sup>1</sup></span>
+                <span class="author">Zihui Wu<sup>1</sup></span>
+                <span class="author">Zhengyu Huang<sup>2</sup></span>
+                <span class="author">Ricardo Baptista<sup>1</sup></span>
+                <span class="author">Yisong Yue<sup>1</sup></span>
+            </div>
+            
+            <div class="affiliations">
+                <span class="affiliation"><sup>1</sup>California Institute of Technology</span>
+                <span class="affiliation"><sup>2</sup>Stanford University</span>
+            </div>
+            
+            <div class="links">
+                <a href="https://arxiv.org/abs/2510.10968" class="btn btn-paper" target="_blank">
+                    <i class="fas fa-file-pdf"></i> Paper
+                </a>
+                <a href="https://github.com/zhengyu-huang/Blade" class="btn btn-code" target="_blank">
+                    <i class="fab fa-github"></i> Code
+                </a>
+                <a href="https://arxiv.org/abs/2510.10968" class="btn btn-arxiv" target="_blank">
+                    <i class="fas fa-book"></i> arXiv
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Abstract Section -->
+    <section id="abstract" class="section">
+        <div class="container">
+            <h2 class="section-title">Abstract</h2>
+            <div class="abstract-content">
+                <p>
+                    Derivative-free Bayesian inversion is an important task in many science and engineering applications, 
+                    particularly when computing the forward model derivative is computationally and practically challenging. 
+                    <strong>Blade</strong> produces accurate and well-calibrated posteriors for Bayesian inversion using an 
+                    ensemble of interacting particles. It leverages powerful data-driven priors based on diffusion models 
+                    and can handle nonlinear forward models that permit only black-box access (i.e., derivative-free).
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Method Section -->
+    <section id="method" class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">Method Overview</h2>
+            <div class="method-content">
+                <div class="diagram-container">
+                    <img src="assets/diagram-compact-1.png" alt="Blade Method Diagram" class="method-diagram">
+                </div>
+                <p class="method-description">
+                    Blade combines ensemble Kalman methods with diffusion model priors to solve inverse problems 
+                    without requiring gradients through the forward model. The method maintains an ensemble of 
+                    particles that are iteratively updated to approximate the posterior distribution.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results" class="section">
+        <div class="container">
+            <h2 class="section-title">Results</h2>
+            <div class="results-content">
+                <div class="results-placeholder">
+                    <p class="placeholder-text">
+                        <i class="fas fa-chart-line"></i>
+                        Results visualizations coming soon
+                    </p>
+                </div>
+                <!-- Future results will be added here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Citation Section -->
+    <section id="citation" class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">Citation</h2>
+            <div class="citation-content">
+                <p class="citation-intro">If you find this work useful, please cite our paper:</p>
+                <div class="bibtex-container">
+                    <button class="copy-btn" onclick="copyBibtex()">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                    <pre class="bibtex"><code>@article{zheng2025blade,
+  title={Blade: A Derivative-free Bayesian Inversion Method using Diffusion Priors},
+  author={Zheng, Hongkai and Wang, Austin and Wu, Zihui and Huang, Zhengyu and Baptista, Ricardo and Yue, Yisong},
+  journal={arXiv preprint arXiv:2510.10968},
+  year={2025}
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Acknowledgments Section -->
+    <section id="acknowledgments" class="section">
+        <div class="container">
+            <h2 class="section-title">Acknowledgments</h2>
+            <p class="acknowledgments-text">
+                This codebase is built upon <a href="https://github.com/Zhengyu-Huang/InverseBench" target="_blank">InverseBench</a>. 
+                We thank the authors for their excellent work and for making their code publicly available.
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>
+                <i class="fas fa-balance-scale"></i> 
+                This project is licensed under the <a href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a>
+            </p>
+            <p class="footer-copyright">
+                &copy; 2025 Blade Authors
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>
