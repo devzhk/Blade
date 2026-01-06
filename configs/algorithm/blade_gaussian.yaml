@@ -1,0 +1,23 @@
+name: Blade
+method:
+  _target_: algo.blade.Blade
+  guidance_scale: 0.4
+  num_steps: 50 
+  total_steps: 10000
+  rho_max: 5.0 
+  rho_min: 0.002
+  rho_schedule: exp 
+  tau: 1.5 
+  batch_size: 1024 
+  likelihood_steps: 200 
+  resample: False 
+  mode: correction 
+  last_step_prior: True
+  init_ensemble: 1024 
+  clean_init: False 
+  diffusion_scheduler_config:
+    num_steps: 100
+    sigma_min: 0.001 
+    sigma_max: 10.0 
+    schedule: 'linear'
+    timestep: 'poly-7'

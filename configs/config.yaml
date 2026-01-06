@@ -1,0 +1,14 @@
+tf32: True
+inference: True    # If False, skip inference and only evaluate the results
+num_samples: 1   # Number of samples to generate for each observation
+compile: True     # If True, enable torch.compile. Recommended for ensemble methods
+seed: 0            # Random seed
+wandb: False       # If True, log to wandb
+exp_name: default  # Name of the experiment
+time_limit_hours: null  # Time limit for each test case in hours. If None, no time limit is set
+wandb_project: ICLR-2026-rebuttal # Project name of wandb, if None, default to problem.name
+defaults:
+  - _self_
+  - pretrain: navier-stokes
+  - problem: navier-stokes
+  - algorithm: enkg

@@ -1,0 +1,16 @@
+name: EKS-DM
+method:
+  _target_: algo.eks-dm.EKS_DM
+  guidance_scale: 0.2
+  num_steps: 1500
+  batch_size: 512
+  gamma: 1.5
+  ensemble_size: 512
+  clean_init: True
+  mode: correction
+  diffusion_scheduler_config:
+    num_steps: 100
+    sigma_min: 0.002
+    sigma_max: 80.0
+    schedule: 'linear'
+    timestep: 'poly-7'

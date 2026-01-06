@@ -1,0 +1,13 @@
+name: Feynman-Kac
+method:
+  _target_: algo.feynman_kac.FeynmanKac
+  diffusion_scheduler_config:
+    num_steps: 256
+    sigma_min: 0.002 # 0.002
+    sigma_max: 80.0 # 80.0
+    schedule: 'linear'
+    timestep: 'poly-7'
+  num_particles: 16
+  potential_type: 'diff'
+  temperature_inv: 1.0
+  threshold: 0.1

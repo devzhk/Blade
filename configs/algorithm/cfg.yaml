@@ -1,0 +1,14 @@
+name: CDM
+method:
+  _target_: algo.cfg.CFGSampler
+  diffusion_scheduler_config:
+    num_steps: 100
+    sigma_min: 0.002 # 0.002
+    sigma_max: 80.0 # 80.0
+    sigma_final: 0.0
+    schedule: 'linear'
+    timestep: 'poly-7'
+  sde: True
+  solver: 'euler_conditional'
+  temp: 1.0
+  scale: 10.

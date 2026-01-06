@@ -1,0 +1,4 @@
+name: DirectUNet
+method:
+  _target_: algo.e2e_unet.E2EUnet
+  scale: 10.

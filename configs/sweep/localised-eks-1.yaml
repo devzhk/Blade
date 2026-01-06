@@ -1,0 +1,39 @@
+
+program: main.py
+project: ICLR-2026-rebuttal
+name: localised-eks-dm-ns-ds2-noise1
+method: bayes
+metric:
+  goal: minimize
+  name: score
+parameters:
+  algorithm.method.guidance_scale:
+    values: [40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0]
+  algorithm.method.gamma:
+    values: [0.03, 0.05, 0.07, 0.1, 0.15]
+  algorithm.method.localization_scale:
+    values: [4000.0, 8000.0, 16000.0, 32000.0, 64000.0, 128000.0]
+
+early_terminate:
+  type: hyperband
+  max_iter: 300
+  eta: 3
+  s: 3
+
+command:
+  - ${env}
+  - python
+  - ${program}
+  - problem=navier-stokes                          # Set the problem config
+  - problem.model.adaptive=True                    # Set the solver's adaptive time stepping to False to avoid too small time steps
+  - problem.data.root="../data/navier-stokes-val/Re200.0-t5.0"   # Path to the validation dataset
+  - problem.model.sigma_noise=1.0
+  - algorithm=local-eks                                 # Set the algorithm config
+  - algorithm.method.num_steps=300
+  - algorithm.method.batch_size=128
+  - algorithm.method.ensemble_size=1024
+  - pretrain=navier-stokes                          # Set the pre-trained model config
+  - compile=True
+  - wandb=True
+  - problem.data.id_list="0-0"                    # String that indicates the indices of data to use. "0-2" includes 0, 1, and 2. "0,3-4" includes 0, 3, and 4.
+  - ${args_no_hyphens}

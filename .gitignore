@@ -1,0 +1,11 @@
+.vscode
+.idea
+**/__pycache__/**
+exps
+outputs
+logs
+checkpoints
+data
+wandb
+results
+.cursor

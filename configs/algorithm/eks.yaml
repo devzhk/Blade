@@ -1,0 +1,18 @@
+name: EKS
+method:
+  _target_: algo.eks.EKS
+  guidance_scale: 75.0
+  num_steps: 500
+  prior_mean: 0.0
+  prior_std: 0.16
+  batch_size: 128
+  gamma: 0.2
+  mode: correction
+  init_ensemble: 512
+  clean_init: True
+  diffusion_scheduler_config:
+    num_steps: 50
+    sigma_min: 0.002
+    sigma_max: 80.0
+    schedule: 'linear'
+    timestep: 'poly-7'
