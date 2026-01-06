@@ -25,6 +25,8 @@ This codebase uses pretrained diffusion models from [InverseBench](https://githu
 
 ## How to run experiments
 
+
+
 ### Examples: Navier-Stokes Inverse Problems
 ```bash
 python main.py algorithm=blade \
@@ -35,6 +37,14 @@ python main.py algorithm=blade \
 ```
 
 `scripts/ns.sh` contains the commands to run Blade on Navier-Stokes.
+#### Evaluation Metrics
+
+For Navier-Stokes experiments, we extend the original InverseBench evaluation with probabilistic metrics to assess the generated posterior distribution:
+
+| Metric | Type | Description |
+|--------|------|-------------|
+| **CRPS** | Probabilistic | Continuous Ranked Probability Score - measures calibration and sharpness |
+| **SSR** | Probabilistic | Spread-Skill Ratio - ideal value is 1.0 (SSR < 1: overconfident, SSR > 1: underconfident) |
 
 ### Examples: Linear Gaussian and Gaussian Mixture Problems
 
