@@ -11,7 +11,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -25,29 +25,28 @@
         <div class="hero-bg"></div>
         <div class="container">
             <h1 class="title">
-                <span class="title-accent">Blade</span>
+                <span class="title-accent">Blade</span><span class="title-sep">:</span> A Derivative-free Bayesian Inversion Method using Diffusion Priors
             </h1>
-            <p class="subtitle">A Derivative-free Bayesian Inversion Method using Diffusion Priors</p>
             
             <div class="authors">
-                <span class="author">Hongkai Zheng<sup>1</sup></span>
+                <span class="author"><a href="https://devzhk.github.io/" target="_blank">Hongkai Zheng</a><sup>1</sup></span>
                 <span class="author">Austin Wang<sup>1</sup></span>
                 <span class="author">Zihui Wu<sup>1</sup></span>
                 <span class="author">Zhengyu Huang<sup>2</sup></span>
-                <span class="author">Ricardo Baptista<sup>1</sup></span>
-                <span class="author">Yisong Yue<sup>1</sup></span>
+                <span class="author"><a href="https://ricardobaptista.com/" target="_blank">Ricardo Baptista</a><sup>1</sup></span>
+                <span class="author"><a href="https://www.yisongyue.com/" target="_blank">Yisong Yue</a><sup>1</sup></span>
             </div>
             
             <div class="affiliations">
                 <span class="affiliation"><sup>1</sup>California Institute of Technology</span>
-                <span class="affiliation"><sup>2</sup>Stanford University</span>
+                <span class="affiliation"><sup>2</sup>Peking University</span>
             </div>
             
             <div class="links">
-                <a href="https://arxiv.org/abs/2510.10968" class="btn btn-paper" target="_blank">
-                    <i class="fas fa-file-pdf"></i> Paper
+                <a href="https://arxiv.org/pdf/2510.10968" class="btn btn-paper" target="_blank">
+                    <i class="fas fa-file-pdf"></i> PDF
                 </a>
-                <a href="https://github.com/zhengyu-huang/Blade" class="btn btn-code" target="_blank">
+                <a href="https://github.com/devzhk/Blade" class="btn btn-code" target="_blank">
                     <i class="fab fa-github"></i> Code
                 </a>
                 <a href="https://arxiv.org/abs/2510.10968" class="btn btn-arxiv" target="_blank">
@@ -57,21 +56,31 @@
         </div>
     </header>
 
-    <!-- Abstract Section -->
-    <section id="abstract" class="section">
+    <!-- Teaser Section -->
+    <section id="teaser" class="section">
         <div class="container">
-            <h2 class="section-title">Abstract</h2>
-            <div class="abstract-content">
-                <p>
-                    Derivative-free Bayesian inversion is an important task in many science and engineering applications, 
-                    particularly when computing the forward model derivative is computationally and practically challenging. 
-                    <strong>Blade</strong> produces accurate and well-calibrated posteriors for Bayesian inversion using an 
-                    ensemble of interacting particles. It leverages powerful data-driven priors based on diffusion models 
-                    and can handle nonlinear forward models that permit only black-box access (i.e., derivative-free).
+            <!-- <div class="teaser-container">
+                <img src="assets/diagram-compact-1.png" alt="Blade Overview" class="teaser-image">
+            </div> -->
+            
+            <!-- TL;DR -->
+            <p class="tldr">
+                <strong>TL;DR:</strong> A derivative-free, ensemble-based Bayesian inversion algorithm that can produce well-calibrated posterior samples for inverse problems with diffusion prior. 
+            </p>
+            
+            <!-- Abstract Block -->
+            <div class="abstract-block">
+                <p class="abstract-text">
+                    <strong class="abstract-label">Abstract:</strong>
+                    Derivative-free Bayesian inversion is an important task in many science and engineering applications, particularly when computing the forward model derivative is computationally and practically challenging. 
+In this paper, we introduce <strong>Blade</strong>, which can produce accurate and well-calibrated posteriors for Bayesian inversion using an ensemble of interacting particles.  <strong>Blade</strong> leverages powerful data-driven priors based on diffusion models, and can handle nonlinear forward models that permit only black-box access (i.e., derivative-free).
+Theoretically, we establish non-asymptotic convergence guarantees and analyze stability under forward model and prior estimation errors. Empirically, <strong>Blade</strong> achieves superior performance compared to existing derivative-free Bayesian inversion methods on various inverse problems, including challenging highly nonlinear fluid dynamics. 
                 </p>
             </div>
         </div>
     </section>
+
+
 
     <!-- Method Section -->
     <section id="method" class="section section-alt">
@@ -132,8 +141,7 @@
         <div class="container">
             <h2 class="section-title">Acknowledgments</h2>
             <p class="acknowledgments-text">
-                This codebase is built upon <a href="https://github.com/Zhengyu-Huang/InverseBench" target="_blank">InverseBench</a>. 
-                We thank the authors for their excellent work and for making their code publicly available.
+                This codebase is built upon <a href="https://github.com/devzhk/InverseBench" target="_blank">InverseBench</a>. 
             </p>
         </div>
     </section>
@@ -146,7 +154,7 @@
                 This project is licensed under the <a href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a>
             </p>
             <p class="footer-copyright">
-                &copy; 2025 Blade Authors
+                &copy; 2025 Hongkai Zheng et al.
             </p>
         </div>
     </footer>
