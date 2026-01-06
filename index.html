@@ -18,6 +18,15 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
+    
+    <!-- MathJax for LaTeX rendering -->
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </head>
 <body>
     <!-- Hero Section -->
@@ -90,11 +99,58 @@ Theoretically, we establish non-asymptotic convergence guarantees and analyze st
                 <div class="diagram-container">
                     <img src="assets/diagram-compact-1.png" alt="Blade Method Diagram" class="method-diagram">
                 </div>
-                <p class="method-description">
-                    Blade combines ensemble Kalman methods with diffusion model priors to solve inverse problems 
-                    without requiring gradients through the forward model. The method maintains an ensemble of 
-                    particles that are iteratively updated to approximate the posterior distribution.
-                </p>
+                
+                <div class="method-description-block">
+                    <p class="method-goal">
+                        <strong>Goal.</strong> Given a noisy observation \(y = \mathcal{G}(x^*) + \varepsilon\) from a black-box forward model \(\mathcal{G}\), 
+                        Blade draws posterior samples \(p(x \mid y)\) that are accurate and well-calibrated&mdash;without requiring gradients of \(\mathcal{G}\).
+                    </p>
+
+                    <p class="method-summary">
+                        <strong>Algorithm.</strong> Blade maintains an ensemble of particles and alternates between two update steps (top row of figure):
+                    </p>
+
+                    <div class="method-steps">
+                        <div class="method-step step-likelihood">
+                            <h4>Likelihood Step <span class="step-color blue"></span></h4>
+                            <p>
+                                The original likelihood potential \(f(z;y) = \frac{1}{2\sigma_y^2}\|\mathcal{G}(z) - y\|_2^2\) 
+                                can have a complex, jagged landscape with local traps (left panel). 
+                                Blade runs <em>covariance-preconditioned Langevin dynamics</em>, 
+                                using <em>statistical linearization</em> to approximate \(\mathcal{G}(z) \approx A_t z + b_t\) from ensemble covariances (bottom-left). 
+                                This turns the potential into a smooth quadratic basin (middle panel), 
+                                enabling derivative-free updates while avoiding local traps.
+                            </p>
+                        </div>
+
+                        <div class="method-step step-prior">
+                            <h4>Prior Step <span class="step-color red"></span></h4>
+                            <p>
+                                A pretrained diffusion model serves as an expressive, data-driven prior \(p(x)\). 
+                                Unlike standard diffusion that starts from pure noise, 
+                                the prior step begins denoising at a noise level set by a <em>coupling strength</em> \(\rho\) (right panel).
+                            </p>
+                        </div>
+                    </div>
+
+                    <p class="method-interplay">
+                        <strong>Interplay.</strong> The likelihood step updates particles along data-informed directions within the current span, 
+                        while the prior step performs global, nonlinear exploration at a scale controlled by \(\rho\). 
+                        Annealing \(\rho\) from large to small implements a smooth path from a diffuse posterior with good mixing 
+                        to the sharp posterior.
+                    </p>
+
+                    <p class="method-result">
+                        <strong>Result.</strong> By iterating these two steps, Blade produces an ensemble of posterior samples all without backpropagating through \(\mathcal{G}\).
+                    </p>
+
+                    <p class="method-theory">
+                        <strong>Theoretical Analysis.</strong> Blade uses approximations&mdash;statistical linearization replaces exact likelihood gradients, and a learned diffusion model stands in for the true prior. 
+                        We establish that Blade <em>converges</em> to the target posterior as more iterations are run, 
+                        and remains <em>stable</em> even when the forward model and prior are only approximately represented. 
+                        In other words, small modeling errors lead to small sampling errors, not catastrophic failures.
+                    </p>
+                </div>
             </div>
         </div>
     </section>
@@ -104,13 +160,213 @@ Theoretically, we establish non-asymptotic convergence guarantees and analyze st
         <div class="container">
             <h2 class="section-title">Results</h2>
             <div class="results-content">
-                <div class="results-placeholder">
-                    <p class="placeholder-text">
-                        <i class="fas fa-chart-line"></i>
-                        Results visualizations coming soon
-                    </p>
+                <!-- Results Figure -->
+                <figure class="results-figure">
+                    <div class="results-figure-container">
+                        <img src="assets/teaser-v3.png" alt="Blade Results Overview" class="results-image">
+                    </div>
+                    <figcaption class="results-caption">
+                        <p class="caption-intro">
+                            The Navier-Stokes inverse problem is challenging because the forward model is a highly nonlinear numerical PDE solver that requires hundreds of numerical steps.
+                        </p>
+                        <p class="caption-detail">
+                            <strong>(a)</strong> Results on linear Gaussian and Gaussian mixture problems. Blue samples are from the ground-truth posterior.
+                            <strong>(b)</strong> Posterior draws from different methods on the Navier-Stokes problem. "Observed GT" marks a single observed ground truth. <span class="method-name">Blade</span> produces smooth, structured samples with realistic variability, while the competing methods yield noisier samples that get stuck in a single blurred mode.
+                            <strong>(c)</strong> CRPS (continuous ranked probability score) versus SSR (spread-skill ratio) under varying measurement noise levels, with area indicating relative runtime cost. Only <span class="method-name">Blade</span> produces well-calibrated samples among derivative-free methods.
+                        </p>
+                    </figcaption>
+                </figure>
+
+                <div class="table-container">
+                    <table class="results-table">
+                        <caption>
+                            <strong>Table 1:</strong> Comparison on the Navier-Stokes inverse problem. The primary probabilistic metrics are CRPS and SSR. Rel L2 error (relative L2 error) is deterministic, included as a complementary metric. — indicates either that probabilistic metrics are inapplicable (deterministic method) or that it is too costly to generate enough samples from the algorithm for reliable calculation of probabilistic metrics. CDM-CA: conditional diffusion model with cross attention. CDM-Cat: conditional diffusion model with channel concatenation.
+                        </caption>
+                        <thead>
+                            <tr class="header-group">
+                                <th rowspan="2">Method</th>
+                                <th colspan="3">σ<sub>noise</sub> = 0</th>
+                                <th colspan="3">σ<sub>noise</sub> = 1.0</th>
+                                <th colspan="3">σ<sub>noise</sub> = 2.0</th>
+                            </tr>
+                            <tr class="header-metrics">
+                                <th>CRPS↓</th>
+                                <th>SSR→1</th>
+                                <th>Rel L2 error↓</th>
+                                <th>CRPS↓</th>
+                                <th>SSR→1</th>
+                                <th>Rel L2 error↓</th>
+                                <th>CRPS↓</th>
+                                <th>SSR→1</th>
+                                <th>Rel L2 error↓</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="section-header">
+                                <td colspan="10"><strong>Paired data</strong></td>
+                            </tr>
+                            <tr>
+                                <td>CDM-CA</td>
+                                <td>2.900</td>
+                                <td>0.983</td>
+                                <td>1.362</td>
+                                <td>2.872</td>
+                                <td>1.059</td>
+                                <td>1.409</td>
+                                <td>2.993</td>
+                                <td>1.087</td>
+                                <td>1.542</td>
+                            </tr>
+                            <tr>
+                                <td>CDM-Cat</td>
+                                <td>1.413</td>
+                                <td>0.896</td>
+                                <td>0.653</td>
+                                <td>1.805</td>
+                                <td>0.979</td>
+                                <td>0.873</td>
+                                <td>2.211</td>
+                                <td>0.974</td>
+                                <td>1.043</td>
+                            </tr>
+                            <tr>
+                                <td>U-Net</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>0.585</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>0.702</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>0.709</td>
+                            </tr>
+                            <tr class="section-header">
+                                <td colspan="10"><strong>Unpaired data</strong></td>
+                            </tr>
+                            <tr>
+                                <td>EKI</td>
+                                <td>2.303</td>
+                                <td>0.012</td>
+                                <td>0.577</td>
+                                <td>2.350</td>
+                                <td>0.118</td>
+                                <td>0.586</td>
+                                <td>2.700</td>
+                                <td>0.011</td>
+                                <td>0.673</td>
+                            </tr>
+                            <tr>
+                                <td>EKS + DM</td>
+                                <td>1.900</td>
+                                <td>0.181</td>
+                                <td>0.539</td>
+                                <td>2.088</td>
+                                <td>0.218</td>
+                                <td>0.606</td>
+                                <td>2.255</td>
+                                <td>0.280</td>
+                                <td>0.685</td>
+                            </tr>
+                            <tr>
+                                <td>EKS w/ DP</td>
+                                <td>1.280</td>
+                                <td>0.061</td>
+                                <td>0.336</td>
+                                <td>1.723</td>
+                                <td>0.085</td>
+                                <td>0.455</td>
+                                <td>2.094</td>
+                                <td>0.080</td>
+                                <td>0.547</td>
+                            </tr>
+                            <tr>
+                                <td>Localized EKS w/ DP</td>
+                                <td>1.643</td>
+                                <td>0.056</td>
+                                <td>0.428</td>
+                                <td>1.887</td>
+                                <td>0.081</td>
+                                <td>0.495</td>
+                                <td>2.057</td>
+                                <td>0.089</td>
+                                <td>0.542</td>
+                            </tr>
+                            <tr>
+                                <td>FKD</td>
+                                <td>1.604</td>
+                                <td>0.002</td>
+                                <td>0.399</td>
+                                <td>1.416</td>
+                                <td>0.050</td>
+                                <td>0.368</td>
+                                <td>1.810</td>
+                                <td>0.012</td>
+                                <td>0.455</td>
+                            </tr>
+                            <tr>
+                                <td>DPG</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>0.325</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>0.408</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>0.466</td>
+                            </tr>
+                            <tr>
+                                <td>SCG</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>0.961</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>0.928</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>0.966</td>
+                            </tr>
+                            <tr>
+                                <td>EnKG</td>
+                                <td>0.395</td>
+                                <td>0.164</td>
+                                <td>0.120</td>
+                                <td>0.651</td>
+                                <td>0.154</td>
+                                <td>0.191</td>
+                                <td>1.032</td>
+                                <td>0.144</td>
+                                <td>0.294</td>
+                            </tr>
+                            <tr class="highlight-row">
+                                <td>Blade (diag)</td>
+                                <td>0.276</td>
+                                <td>0.086</td>
+                                <td><strong>0.080</strong></td>
+                                <td>0.542</td>
+                                <td>0.177</td>
+                                <td><strong>0.162</strong></td>
+                                <td>0.758</td>
+                                <td>0.129</td>
+                                <td><strong>0.217</strong></td>
+                            </tr>
+                            <tr class="highlight-row">
+                                <td>Blade (main)</td>
+                                <td><strong>0.216</strong></td>
+                                <td><strong>0.955</strong></td>
+                                <td>0.110</td>
+                                <td><strong>0.453</strong></td>
+                                <td><strong>0.950</strong></td>
+                                <td>0.229</td>
+                                <td><strong>0.608</strong></td>
+                                <td><strong>0.949</strong></td>
+                                <td>0.306</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <!-- Future results will be added here -->
             </div>
         </div>
     </section>
