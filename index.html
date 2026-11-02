@@ -81,9 +81,13 @@
             <div class="abstract-block">
                 <p class="abstract-text">
                     <strong class="abstract-label">Abstract:</strong>
-                    Derivative-free Bayesian inversion is an important task in many science and engineering applications, particularly when computing the forward model derivative is computationally and practically challenging. 
-In this paper, we introduce <strong>Blade</strong>, which can produce accurate and well-calibrated posteriors for Bayesian inversion using an ensemble of interacting particles.  <strong>Blade</strong> leverages powerful data-driven priors based on diffusion models, and can handle nonlinear forward models that permit only black-box access (i.e., derivative-free).
-Theoretically, we establish non-asymptotic convergence guarantees and analyze stability under forward model and prior estimation errors. Empirically, <strong>Blade</strong> achieves superior performance compared to existing derivative-free Bayesian inversion methods on various inverse problems, including challenging highly nonlinear fluid dynamics. 
+                    Derivative-free Bayesian inversion arises in science and engineering applications, particularly when the forward model is costly or infeasible to differentiate through.
+Existing derivative-free methods collapse the posterior to a point estimate or return severely over-confident uncertainty on high-dimensional, nonlinear problems.
+We introduce <strong>Blade</strong>, which produces accurate and well-calibrated posteriors using an ensemble of interacting particles.
+<strong>Blade</strong> leverages diffusion models as data-driven priors, and only queries the forward model through forward evaluations (i.e., derivative-free).
+Theoretically, we bound how far an idealized <strong>Blade</strong> deviates from a reference process under forward model and prior score errors, under strong assumptions.
+Empirically, on nonlinear fluid dynamics, <strong>Blade</strong> produces well-calibrated posterior samples that existing derivative-free methods cannot, as measured by CRPS, the spread-skill ratio, and the rank histogram.
+Its accuracy and calibration also improve with more iterations and particles.
                 </p>
             </div>
         </div>
@@ -146,9 +150,7 @@ Theoretically, we establish non-asymptotic convergence guarantees and analyze st
 
                     <p class="method-theory">
                         <strong>Theoretical Analysis.</strong> Blade uses approximations&mdash;statistical linearization replaces exact likelihood gradients, and a learned diffusion model stands in for the true prior. 
-                        We establish that Blade <em>converges</em> to the target posterior as more iterations are run, 
-                        and remains <em>stable</em> even when the forward model and prior are only approximately represented. 
-                        In other words, small modeling errors lead to small sampling errors, not catastrophic failures.
+                        In an idealized continuous-time, large-particle setting, we bound Blade's deviation from a reference process in terms of these two errors.
                     </p>
                 </div>
             </div>
